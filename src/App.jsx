@@ -1,12 +1,26 @@
 import React from "react";
-import MyComponent from "./MyComponent";
+import { Routes, Route } from "react-router-dom";
+import { BrowserRouter } from "react-router-dom";
+import Home from "./pages/home.tsx";
 
 function App() {
+
   return (
-    <div className="p-6">
-      <MyComponent />
-    </div>
-  );
+    <React.StrictMode>
+    <BrowserRouter>
+      <div className="App">
+        <div className="pages">
+          <Routes>
+            <Route path="/test_korean/" element={<Home />} />
+            <Route path="/test_korean/home" element={<Home />} />
+           
+           
+          </Routes>
+        </div>
+      </div>
+    </BrowserRouter>
+  </React.StrictMode>
+  )
 }
 
-export default App;
+export default App
