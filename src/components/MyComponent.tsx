@@ -486,15 +486,15 @@ const KoreanLevel1Test = () => {
 
   if (!showTest) {
     return (
-      <div className="min-h-screen bg-gray-50 py-8">
-        <div className="max-w-2xl mx-auto p-8">
-          <div className="bg-white rounded-lg shadow-lg p-8">
-            <div className="text-center mb-8 pb-6 border-b-2 border-blue-600">
-              <h1 className="text-3xl font-bold text-gray-800 mb-2">한국어 능력 평가 시험 (Level 1)</h1>
-              <p className="text-sm text-gray-600">Korean Proficiency Test - Beginner Level</p>
+      <div className="min-h-screen bg-gray-50 py-4 sm:py-8 px-4">
+        <div className="max-w-2xl mx-auto p-4 sm:p-8">
+          <div className="bg-white rounded-lg shadow-lg p-4 sm:p-8">
+            <div className="text-center mb-6 sm:mb-8 pb-4 sm:pb-6 border-b-2 border-blue-600">
+              <h1 className="text-xl sm:text-2xl md:text-3xl font-bold text-gray-800 mb-2">한국어 능력 평가 시험 (Level 1)</h1>
+              <p className="text-xs sm:text-sm text-gray-600">Korean Proficiency Test - Beginner Level</p>
             </div>
 
-            <div className="bg-gray-50 p-4 rounded-lg mb-6 text-sm text-gray-700">
+            <div className="bg-gray-50 p-3 sm:p-4 rounded-lg mb-4 sm:mb-6 text-xs sm:text-sm text-gray-700">
               <strong>Instructions:</strong><br/>
               • Time limit: 59 minutes<br/>
               • Choose the most appropriate answer<br/>
@@ -503,20 +503,20 @@ const KoreanLevel1Test = () => {
 
             <div className="space-y-4">
               <div>
-                <label className="block font-medium mb-2">Name:</label>
-                <input type="text" value={name} onChange={e => setName(e.target.value)} className="w-full border p-3 rounded-lg" placeholder="Enter your name" />
+                <label className="block font-medium mb-2 text-sm sm:text-base">Name:</label>
+                <input type="text" value={name} onChange={e => setName(e.target.value)} className="w-full border p-2 sm:p-3 rounded-lg text-sm sm:text-base" placeholder="Enter your name" />
               </div>
               <div>
-                <label className="block font-medium mb-2">Nationality:</label>
-                <input type="text" value={nationality} onChange={e => setNationality(e.target.value)} className="w-full border p-3 rounded-lg" placeholder="Enter your nationality" />
+                <label className="block font-medium mb-2 text-sm sm:text-base">Nationality:</label>
+                <input type="text" value={nationality} onChange={e => setNationality(e.target.value)} className="w-full border p-2 sm:p-3 rounded-lg text-sm sm:text-base" placeholder="Enter your nationality" />
               </div>
               <div>
-                <label className="block font-medium mb-2">Year of birth:</label>
-                <input type="number" value={birthYear} onChange={e => setBirthYear(e.target.value)} className="w-full border p-3 rounded-lg" placeholder="Enter your birth year" />
+                <label className="block font-medium mb-2 text-sm sm:text-base">Year of birth:</label>
+                <input type="number" value={birthYear} onChange={e => setBirthYear(e.target.value)} className="w-full border p-2 sm:p-3 rounded-lg text-sm sm:text-base" placeholder="Enter your birth year" />
               </div>
             </div>
 
-            <button onClick={handleStart} disabled={!name || !nationality || !birthYear} className="w-full mt-6 bg-blue-600 text-white py-3 rounded-lg font-semibold hover:bg-blue-700 disabled:bg-gray-400 transition">
+            <button onClick={handleStart} disabled={!name || !nationality || !birthYear} className="w-full mt-6 bg-blue-600 text-white py-2 sm:py-3 rounded-lg font-semibold hover:bg-blue-700 disabled:bg-gray-400 transition text-sm sm:text-base">
               Start Test (59:00)
             </button>
           </div>
@@ -528,41 +528,41 @@ const KoreanLevel1Test = () => {
   if (showResults) {
     const total = vocabScore + grammarScore + understandScore;
     return (
-      <div className="min-h-screen bg-gray-50 py-8">
-        <div className="max-w-4xl mx-auto p-8">
-          <div className="bg-white rounded-lg shadow-lg p-8">
-            <h1 className="text-3xl font-bold mb-6 text-center">한국어 능력 평가 시험 결과</h1>
-            <div className="text-center mb-8">
-              <p className="text-gray-600 mb-2">Name: {name}</p>
-              <p className="text-gray-600 mb-2">Nationality: {nationality}</p>
-              <p className="text-gray-600">Birth Year: {birthYear}</p>
+      <div className="min-h-screen bg-gray-50 py-4 sm:py-8 px-4">
+        <div className="max-w-4xl mx-auto p-4 sm:p-8">
+          <div className="bg-white rounded-lg shadow-lg p-4 sm:p-8">
+            <h1 className="text-2xl sm:text-3xl font-bold mb-4 sm:mb-6 text-center">한국어 능력 평가 시험 결과</h1>
+            <div className="text-center mb-6 sm:mb-8">
+              <p className="text-gray-600 mb-2 text-sm sm:text-base">Name: {name}</p>
+              <p className="text-gray-600 mb-2 text-sm sm:text-base">Nationality: {nationality}</p>
+              <p className="text-gray-600 text-sm sm:text-base">Birth Year: {birthYear}</p>
             </div>
             
-            <div className="text-center mb-8">
-              <p className="text-5xl font-bold text-blue-600 mb-2">{total}/200</p>
-              <p className="text-xl text-gray-600">Total Score</p>
+            <div className="text-center mb-6 sm:mb-8">
+              <p className="text-4xl sm:text-5xl font-bold text-blue-600 mb-2">{total}/200</p>
+              <p className="text-lg sm:text-xl text-gray-600">Total Score</p>
             </div>
 
-            <div className="grid grid-cols-3 gap-6 mt-8">
-              <div className="bg-blue-50 p-6 rounded-lg border-2 border-blue-300">
-                <h3 className="font-bold text-xl mb-2 text-blue-800">어휘 (Vocabulary)</h3>
-                <p className="text-4xl font-bold text-blue-600">{vocabScore}</p>
-                <p className="text-gray-600 mt-1">/ 44</p>
+            <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 sm:gap-6 mt-6 sm:mt-8">
+              <div className="bg-blue-50 p-4 sm:p-6 rounded-lg border-2 border-blue-300">
+                <h3 className="font-bold text-lg sm:text-xl mb-2 text-blue-800">어휘 (Vocabulary)</h3>
+                <p className="text-3xl sm:text-4xl font-bold text-blue-600">{vocabScore}</p>
+                <p className="text-gray-600 mt-1 text-sm sm:text-base">/ 44</p>
               </div>
-              <div className="bg-green-50 p-6 rounded-lg border-2 border-green-300">
-                <h3 className="font-bold text-xl mb-2 text-green-800">문법 (Grammar)</h3>
-                <p className="text-4xl font-bold text-green-600">{grammarScore}</p>
-                <p className="text-gray-600 mt-1">/ 56</p>
+              <div className="bg-green-50 p-4 sm:p-6 rounded-lg border-2 border-green-300">
+                <h3 className="font-bold text-lg sm:text-xl mb-2 text-green-800">문법 (Grammar)</h3>
+                <p className="text-3xl sm:text-4xl font-bold text-green-600">{grammarScore}</p>
+                <p className="text-gray-600 mt-1 text-sm sm:text-base">/ 56</p>
               </div>
-              <div className="bg-yellow-50 p-6 rounded-lg border-2 border-yellow-300">
-                <h3 className="font-bold text-xl mb-2 text-yellow-800">이해 (Understanding)</h3>
-                <p className="text-4xl font-bold text-yellow-600">{understandScore}</p>
-                <p className="text-gray-600 mt-1">/ 100</p>
+              <div className="bg-yellow-50 p-4 sm:p-6 rounded-lg border-2 border-yellow-300">
+                <h3 className="font-bold text-lg sm:text-xl mb-2 text-yellow-800">이해 (Understanding)</h3>
+                <p className="text-3xl sm:text-4xl font-bold text-yellow-600">{understandScore}</p>
+                <p className="text-gray-600 mt-1 text-sm sm:text-base">/ 100</p>
               </div>
             </div>
 
-            <div className="mt-8 text-center">
-              <button onClick={() => window.location.reload()} className="bg-blue-600 text-white px-8 py-3 rounded-lg hover:bg-blue-700 transition">
+            <div className="mt-6 sm:mt-8 text-center">
+              <button onClick={() => window.location.reload()} className="bg-blue-600 text-white px-6 sm:px-8 py-2 sm:py-3 rounded-lg hover:bg-blue-700 transition text-sm sm:text-base">
                 Take Test Again
               </button>
             </div>
@@ -573,32 +573,32 @@ const KoreanLevel1Test = () => {
   }
 
   return (
-    <div className="min-h-screen bg-gray-50 py-8">
-      <div className="max-w-4xl mx-auto p-6">
-        <div className="bg-white rounded-lg shadow-lg p-8">
-          <div className="text-center mb-8 sticky top-0 bg-white z-10 pb-4 border-b-2">
-            <h1 className="text-3xl font-bold">한국어 능력 평가 시험 (Level 1)</h1>
-            <div className="mt-4 text-4xl font-bold text-red-600">{formatTime(timeLeft)}</div>
+    <div className="min-h-screen bg-gray-50 py-4 sm:py-8 px-2 sm:px-4">
+      <div className="max-w-4xl mx-auto p-2 sm:p-6">
+        <div className="bg-white rounded-lg shadow-lg p-4 sm:p-8">
+          <div className="text-center mb-6 sm:mb-8 sticky top-0 bg-white z-10 pb-4 border-b-2">
+            <h1 className="text-xl sm:text-2xl md:text-3xl font-bold">한국어 능력 평가 시험 (Level 1)</h1>
+            <div className="mt-4 text-3xl sm:text-4xl font-bold text-red-600">{formatTime(timeLeft)}</div>
           </div>
 
-          <div className="space-y-12">
+          <div className="space-y-8 sm:space-y-12">
             {questions.map((q, index) => {
               const showTitle = index === 0 || q.id === 1 || q.id === 10 || q.id === 14 || q.id === 24 || q.id === 28 || q.id === 33 || q.id === 37;
 
               return (
                 <div key={q.id}>
                   {showTitle && !q.isExample && (
-                    <div className="bg-blue-50 p-5 rounded-lg mb-8 font-bold text-blue-900 border-l-4 border-blue-600">
+                    <div className="bg-blue-50 p-3 sm:p-5 rounded-lg mb-6 sm:mb-8 font-bold text-blue-900 border-l-4 border-blue-600 text-sm sm:text-base">
                       {getSectionTitle(q.id)}
                     </div>
                   )}
 
                   {q.isExample && (
-                    <div className="bg-yellow-50 p-6 rounded-lg mb-10 border-2 border-yellow-400">
-                      <div className="font-bold text-xl text-yellow-900 mb-4">
+                    <div className="bg-yellow-50 p-4 sm:p-6 rounded-lg mb-8 sm:mb-10 border-2 border-yellow-400">
+                      <div className="font-bold text-lg sm:text-xl text-yellow-900 mb-4">
                         ※ &lt;보기&gt; (Example)
                       </div>
-                      <div className="text-lg leading-loose">
+                      <div className="text-base sm:text-lg leading-loose">
                         {formatQuestionText(q.korean)}
                       </div>
                       <div className="mt-4 text-green-700 font-semibold">
@@ -608,13 +608,13 @@ const KoreanLevel1Test = () => {
                   )}
 
                   {!q.isExample && (
-                    <div className="bg-gray-50 p-8 rounded-lg border border-gray-300 hover:shadow-md transition">
-                      <div className="flex items-start gap-6">
-                        <div className="bg-blue-600 text-white w-12 h-12 rounded-full flex items-center justify-center text-2xl font-bold flex-shrink-0">
+                    <div className="bg-gray-50 p-4 sm:p-8 rounded-lg border border-gray-300 hover:shadow-md transition">
+                      <div className="flex flex-col sm:flex-row items-start gap-4 sm:gap-6">
+                        <div className="bg-blue-600 text-white w-10 h-10 sm:w-12 sm:h-12 rounded-full flex items-center justify-center text-xl sm:text-2xl font-bold flex-shrink-0">
                           {q.id}
                         </div>
-                        <div className="flex-1">
-                          <div className="bg-white p-6 rounded-lg mb-6 border-l-4 border-blue-500">
+                        <div className="flex-1 w-full">
+                          <div className="bg-white p-4 sm:p-6 rounded-lg mb-4 sm:mb-6 border-l-4 border-blue-500 text-sm sm:text-base">
                             {formatQuestionText(q.korean)}
                           </div>
 
@@ -626,13 +626,13 @@ const KoreanLevel1Test = () => {
                                 <button
                                   key={i}
                                   onClick={() => handleAnswerChange(q.id, val)}
-                                  className={`p-5 text-left rounded-lg border-2 transition-all duration-200 text-base ${
+                                  className={`p-3 sm:p-5 text-left rounded-lg border-2 transition-all duration-200 text-sm sm:text-base ${
                                     selected 
                                       ? 'bg-blue-100 border-blue-600 shadow-lg transform scale-105' 
                                       : 'bg-white border-gray-300 hover:border-blue-400 hover:shadow-md'
                                   }`}
                                 >
-                                  <span className="font-bold text-blue-700 text-xl mr-3">{opt.split(' ')[0]}</span>
+                                  <span className="font-bold text-blue-700 text-lg sm:text-xl mr-2 sm:mr-3">{opt.split(' ')[0]}</span>
                                   <span className="text-gray-800">{opt.substring(opt.indexOf(' ') + 1)}</span>
                                 </button>
                               );
@@ -647,8 +647,8 @@ const KoreanLevel1Test = () => {
             })}
           </div>
 
-          <div className="mt-16 text-center sticky bottom-4">
-            <button onClick={submitTest} className="bg-green-600 text-white px-16 py-6 rounded-xl text-2xl font-bold hover:bg-green-700 shadow-2xl transform hover:scale-105 transition">
+          <div className="mt-12 sm:mt-16 text-center sticky bottom-4">
+            <button onClick={submitTest} className="bg-green-600 text-white px-8 sm:px-16 py-4 sm:py-6 rounded-xl text-lg sm:text-2xl font-bold hover:bg-green-700 shadow-2xl transform hover:scale-105 transition">
               제출하기 (Submit Test)
             </button>
           </div>
