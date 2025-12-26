@@ -1,72 +1,444 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 
- const KoreanLevel1Test = () => {
+const KoreanLevel1Test = () => {
   const [name, setName] = useState('');
   const [nationality, setNationality] = useState('');
   const [birthYear, setBirthYear] = useState('');
-  const [answers, setAnswers] = useState({});
+  const [answers, setAnswers] = useState<{ [key: number]: string[] }>({});
   const [showTest, setShowTest] = useState(false);
   const [showResults, setShowResults] = useState(false);
-  const [score, setScore] = useState(0);
   const [vocabScore, setVocabScore] = useState(0);
   const [grammarScore, setGrammarScore] = useState(0);
   const [understandScore, setUnderstandScore] = useState(0);
-  const currentDate = '2025.08.25';
+  const [timeLeft, setTimeLeft] = useState(59 * 60);
 
   const questions = [
-    // Vocabulary Questions (1-10)
-    { id: 1, section: 'vocabulary', type: 'multiple', korean: '가: 이 가방이 크다고 생각해요?\n나: 아니요, 가방이 ( ).', options: ['① 작습니다', '② 큽니다', '③ 좋습니다', '④ 나쁩니다'], correct: '1' },
-    { id: 2, section: 'vocabulary', type: 'multiple', korean: '가: 오늘 날씨가 덥네요.\n나: 네, 어제는 ( ).', options: ['① 더웠어요', '② 추웠어요', '③ 좋았어요', '④ 싫었어요'], correct: '2' },
-    { id: 3, section: 'vocabulary', type: 'multiple', korean: '가: 영화가 재미있었어요?\n나: 아니요, ( ).', options: ['① 재미없었어요', '② 좋았어요', '③ 길었어요', '④ 짧았어요'], correct: '1' },
-    { id: 4, section: 'vocabulary', type: 'multiple', korean: '가: 이 음식이 싸요?\n나: 아니요, ( ).', options: ['① 저렴해요', '② 비싸요', '③ 맛있어요', '④ 달아요'], correct: '2' },
-    { id: 5, section: 'vocabulary', type: 'multiple', korean: '가: 학교가 집에서 멀어요?\n나: 아니요, ( ).', options: ['① 가까워요', '② 좋아요', '③ 커요', '④ 예뻐요'], correct: '1' },
-    { id: 6, section: 'vocabulary', type: 'multiple', korean: '가: 이 방이 밝아요.\n나: 네, 저 방은 ( ).', options: ['① 어두워요', '② 밝아요', '③ 깨끗해요', '④ 넓어요'], correct: '1' },
-    { id: 7, section: 'vocabulary', type: 'multiple', korean: '가: 오빠가 키가 커요?\n나: 아니요, ( ).', options: ['① 키가 작아요', '② 키가 커요', '③ 잘생겼어요', '④ 친절해요'], correct: '1' },
-    { id: 8, section: 'vocabulary', type: 'multiple', korean: '가: 이 커피가 뜨거워요.\n나: 그럼 저 커피는 ( )?', options: ['① 차가워요', '② 뜨거워요', '③ 달아요', '④ 써요'], correct: '1' },
-    { id: 9, section: 'vocabulary', type: 'multiple', korean: '가: 아침에 일찍 일어나요?\n나: 아니요, ( ) 일어나요.', options: ['① 늦게', '② 빨리', '③ 자주', '④ 가끔'], correct: '1' },
-    { id: 10, section: 'vocabulary', type: 'multiple', korean: '가: 이 길이 복잡해요?\n나: 아니요, ( ).', options: ['① 조용해요', '② 시끄러워요', '③ 깨끗해요', '④ 더러워요'], correct: '1' },
+    // ================= EXAMPLE =================
+    {
+      id: 0,
+      isExample: true,
+      korean: '※ <보기>\n사과가 있습니다. 그리고 배도 있습니다.\n① 고향 ② 얼굴 ③ 과일 ④ 계절',
+      options: [],
+      correct: [3],
+      multipleAnswers: false
+    },
 
-    // Grammar Questions (11-20)
-    { id: 11, section: 'grammar', type: 'mark', korean: '저는 (학생 / 이에요 / 입니다).', options: ['① 학생입니다', '② 학생이에요', '③ 학생해요', '④ 학생있어요'], correct: '①' },
-    { id: 12, section: 'grammar', type: 'mark', korean: '친구 (가 / 이 / 을) 만나요.', options: ['① 친구가', '② 친구를', '③ 친구에', '④ 친구로'], correct: '②' },
-    { id: 13, section: 'grammar', type: 'mark', korean: '도서관 (에서 / 에 / 로) 공부해요.', options: ['① 도서관에서', '② 도서관에', '③ 도서관을', '④ 도서관이'], correct: '①' },
-    { id: 14, section: 'grammar', type: 'mark', korean: '이것 (은 / 는 / 을) 뭐예요?', options: ['① 이것은', '② 이것을', '③ 이것에', '④ 이것이'], correct: '①' },
-    { id: 15, section: 'grammar', type: 'mark', korean: '집 (에 / 에서 / 로) 가요.', options: ['① 집에', '② 집에서', '③ 집을', '④ 집으로'], correct: '①' },
-    { id: 16, section: 'grammar', type: 'multiple', korean: '저는 ( )을 먹어요.', options: ['① 책', '② 사과', '③ 펜', '④ 가방'], correct: '2' },
-    { id: 17, section: 'grammar', type: 'multiple', korean: '학교에 ( ) 가요.', options: ['① 버스로', '② 친구와', '③ 공부하러', '④ 책을'], correct: '2' },
-    { id: 18, section: 'grammar', type: 'multiple', korean: '이것은 ( )입니다.', options: ['① 물', '② 선생님', '③ 책상', '④ 꽃'], correct: '3' },
-    { id: 19, section: 'grammar', type: 'multiple', korean: '저는 ( )에 삽니다.', options: ['① 학교', '② 서울', '③ 책', '④ 친구'], correct: '2' },
-    { id: 20, section: 'grammar', type: 'multiple', korean: '( )이/가 좋아요?', options: ['① 음악', '② 집', '③ 물', '④ 가방'], correct: '1' },
+    // ================= GRAMMAR - PARTICLES (1~9) =================
+   {
+  id: 1,
+  section: 'grammar',
+  korean: '1. 저( ) 학생입니다.',
+  options: ['① 가', '② 는', '③ 도', '④ 만'],
+  correct: [2],
+  multipleAnswers: false
+},
+{
+  id: 2,
+  section: 'grammar',
+  korean: '2. 친구( ) 만났어요.',
+  options: ['① 를', '② 에게', '③ 한테', '④ 와'],
+  correct: [1],
+  multipleAnswers: false
+},
+{
+  id: 3,
+  section: 'grammar',
+  korean: '3. 학교( ) 갑니다.',
+  options: ['① 로', '② 에서', '③ 에', '④ 까지'],
+  correct: [3],
+  multipleAnswers: false
+},
+{
+  id: 4,
+  section: 'grammar',
+  korean: '4. 어제 도서관( ) 공부했어요.',
+  options: ['① 에', '② 에서', '③ 으로', '④ 까지'],
+  correct: [2],
+  multipleAnswers: false
+},
+{
+  id: 5,
+  section: 'grammar',
+  korean: '5. 아침( ) 빵을 먹어요.',
+  options: ['① 에', '② 에서', '③ 부터', '④ 까지'],
+  correct: [1],
+  multipleAnswers: false
+},
+{
+  id: 6,
+  section: 'grammar',
+  korean: '6. 비( ) 옵니다.',
+  options: ['① 를', '② 가', '③ 이', '④ 도'],
+  correct: [2],
+  multipleAnswers: false
+},
+{
+  id: 7,
+  section: 'grammar',
+  korean: '7. 친구( ) 같이 영화를 봤어요.',
+  options: ['① 에게', '② 한테', '③ 와', '④ 하고'],
+  correct: [3],
+  multipleAnswers: false
+},
+{
+  id: 8,
+  section: 'grammar',
+  korean: '8. 저는 커피( ) 좋아해요.',
+  options: ['① 를', '② 가', '③ 은', '④ 도'],
+  correct: [1],
+  multipleAnswers: false
+},
+{
+  id: 9,
+  section: 'grammar',
+  korean: '9. 내일 서울( ) 출발합니다.',
+  options: ['① 에', '② 에서', '③ 로', '④ 까지'],
+  correct: [2],
+  multipleAnswers: false
+},
 
-    // Understanding Questions (21-40)
-    { id: 21, section: 'understanding', type: 'multiple', korean: '가: 안녕하세요!\n나: ( )', options: ['① 안녕하세요!', '② 안녕히 가세요!', '③ 고맙습니다!', '④ 죄송합니다!'], correct: '1' },
-    { id: 22, section: 'understanding', type: 'multiple', korean: '가: 이름이 뭐예요?\n나: ( )', options: ['① 네, 맞아요', '② 저는 김철수예요', '③ 한국 사람이에요', '④ 20살이에요'], correct: '2' },
-    { id: 23, section: 'understanding', type: 'multiple', korean: '가: 지금 몇 시예요?\n나: ( )', options: ['① 2월이에요', '② 월요일이에요', '③ 3시예요', '④ 한국이에요'], correct: '3' },
-    { id: 24, section: 'understanding', type: 'multiple', korean: '가: 어디에서 왔어요?\n나: ( )', options: ['① 학교에 가요', '② 중국에서 왔어요', '③ 한국어를 공부해요', '④ 책을 읽어요'], correct: '2' },
-    { id: 25, section: 'understanding', type: 'multiple', korean: '가: 뭘 드시겠어요?\n나: ( )', options: ['① 네, 있어요', '② 아니요, 괜찮아요', '③ 커피 주세요', '④ 감사합니다'], correct: '3' },
-    { id: 26, section: 'understanding', type: 'multiple', korean: '가: 어디에 살아요?\n나: ( )', options: ['① 서울에 살아요', '② 책이에요', '③ 학교에요', '④ 친구예요'], correct: '1' },
-    { id: 27, section: 'understanding', type: 'multiple', korean: '가: 뭐하세요?\n나: ( )', options: ['① 공부해요', '② 집에요', '③ 물이에요', '④ 가방이에요'], correct: '1' },
-    { id: 28, section: 'understanding', type: 'multiple', korean: '가: 몇 살이에요?\n나: ( )', options: ['① 25살이에요', '② 책이에요', '③ 집이에요', '④ 학교예요'], correct: '1' },
-    { id: 29, section: 'understanding', type: 'multiple', korean: '가: 맛있어요?\n나: ( )', options: ['① 네, 맛있어요', '② 아니요, 좋아요', '③ 책이에요', '④ 집이에요'], correct: '1' },
-    { id: 30, section: 'understanding', type: 'multiple', korean: '가: 언제 가요?\n나: ( )', options: ['① 내일 가요', '② 책이에요', '③ 집이에요', '④ 물이에요'], correct: '1' },
-    { id: 31, section: 'understanding', type: 'multiple', korean: '가: 누구예요?\n나: ( )', options: ['① 저는 학생이에요', '② 책이에요', '③ 집이에요', '④ 물이에요'], correct: '1' },
-    { id: 32, section: 'understanding', type: 'multiple', korean: '가: 어디 가요?\n나: ( )', options: ['① 학교에 가요', '② 책을 읽어요', '③ 집이에요', '④ 물이에요'], correct: '1' },
-    { id: 33, section: 'understanding', type: 'multiple', korean: '가: 뭐가 좋아요?\n나: ( )', options: ['① 음악이 좋아요', '② 책이에요', '③ 집이에요', '④ 물이에요'], correct: '1' },
-    { id: 34, section: 'understanding', type: 'multiple', korean: '가: 언제 만날까요?\n나: ( )', options: ['① 내일 만날게요', '② 책이에요', '③ 집이에요', '④ 물이에요'], correct: '1' },
-    { id: 35, section: 'understanding', type: 'multiple', korean: '가: 어디서 공부해요?\n나: ( )', options: ['① 도서관에서 공부해요', '② 집에서', '③ 학교에서', '④ 책에서'], correct: '1' },
-    { id: 36, section: 'understanding', type: 'multiple', korean: '가: 뭐 먹어요?\n나: ( )', options: ['① 김치를 먹어요', '② 책이에요', '③ 집이에요', '④ 물이에요'], correct: '1' },
-    { id: 37, section: 'understanding', type: 'multiple', korean: '가: 어디서 일해요?\n나: ( )', options: ['① 회사에서 일해요', '② 집에서', '③ 학교에서', '④ 책에서'], correct: '1' },
-    { id: 38, section: 'understanding', type: 'multiple', korean: '가: 뭐 사요?\n나: ( )', options: ['① 사과를 사요', '② 책을 사요', '③ 집을 사요', '④ 물을 사요'], correct: '1' },
-    { id: 39, section: 'understanding', type: 'multiple', korean: '가: 언제 오세요?\n나: ( )', options: ['① 5시에 와요', '② 책이에요', '③ 집이에요', '④ 물이에요'], correct: '1' },
-    { id: 40, section: 'understanding', type: 'multiple', korean: '가: 누구와 가요?\n나: ( )', options: ['① 친구와 가요', '② 책과 가요', '③ 집과 가요', '④ 물과 가요'], correct: '1' },
+    // ================= GRAMMAR - VERB CONJUGATION (10~13) =================
+    {
+      id: 10,
+      section: 'grammar',
+      korean: '10. 저는 어제 공원에 ( ).',
+      options: ['① 가요', '② 갔어요', '③ 갈 거예요', '④ 갑니다'],
+      correct: [2],
+      multipleAnswers: false
+    },
+    {
+      id: 11,
+      section: 'grammar',
+      korean: '11. 내일 친구를 ( ).',
+      options: ['① 만났어요', '② 만나요', '③ 만날 거예요', '④ 만납니다'],
+      correct: [3],
+      multipleAnswers: false
+    },
+    {
+      id: 12,
+      section: 'grammar',
+      korean: '12. 지금 저는 책을 ( ).',
+      options: ['① 읽었어요', '② 읽을 거예요', '③ 읽어요', '④ 읽어'],
+      correct: [3],
+      multipleAnswers: false
+    },
+    {
+      id: 13,
+      section: 'grammar',
+      korean: '13. 어제 식당에서 밥을 ( ).',
+      options: ['① 먹어요', '② 먹었어요', '③ 먹을 거예요', '④ 먹습니다'],
+      correct: [2],
+      multipleAnswers: false
+    },
+
+    // ================= VOCABULARY - OPPOSITES (14~23) =================
+    {
+      id: 14,
+      section: 'vocabulary',
+      korean: '14. 가: 이 가방이 크다고 생각해요?\n나: 아니요, 가방이 ( ).',
+      options: ['① 작습니다', '② 큽니다', '③ 좋습니다', '④ 나쁩니다'],
+      correct: [1],
+      multipleAnswers: false
+    },
+    {
+      id: 15,
+      section: 'vocabulary',
+      korean: '15. 가: 오늘 날씨가 덥네요.\n나: 네, 어제는 ( ).',
+      options: ['① 더웠어요', '② 추웠어요', '③ 좋았어요', '④ 싫었어요'],
+      correct: [2],
+      multipleAnswers: false
+    },
+    {
+      id: 16,
+      section: 'vocabulary',
+      korean: '16. 가: 영화가 재미있었어요?\n나: 아니요, ( ).',
+      options: ['① 좋았어요', '② 재미없었어요', '③ 길었어요', '④ 짧았어요'],
+      correct: [2],
+      multipleAnswers: false
+    },
+    {
+      id: 17,
+      section: 'vocabulary',
+      korean: '17. 가: 이 음식이 싸요?\n나: 아니요, ( ).',
+      options: ['① 저렴해요', '② 비싸요', '③ 맛있어요', '④ 달아요'],
+      correct: [2],
+      multipleAnswers: false
+    },
+    {
+      id: 18,
+      section: 'vocabulary',
+      korean: '18. 가: 학교가 집에서 멀어요?\n나: 아니요, ( ).',
+      options: ['① 좋아요', '② 커요', '③ 가까워요', '④ 예뻐요'],
+      correct: [3],
+      multipleAnswers: false
+    },
+    {
+      id: 19,
+      section: 'vocabulary',
+      korean: '19. 가: 이 방이 밝아요.\n나: 아니요, 저 방은 ( ).',
+      options: ['① 밝아요', '② 깨끗해요', '③ 넓어요', '④ 어두워요'],
+      correct: [4],
+      multipleAnswers: false
+    },
+    {
+      id: 20,
+      section: 'vocabulary',
+      korean: '20. 가: 오빠가 키가 커요?\n나: 아니요, ( ).',
+      options: ['① 키가 커요', '② 잘생겼어요', '③ 키가 작아요', '④ 친절해요'],
+      correct: [3],
+      multipleAnswers: false
+    },
+    {
+      id: 21,
+      section: 'vocabulary',
+      korean: '21. 가: 이 교실에 학생이 많아요?\n나: 아니요, ( ).',
+      options: ['① 학생이 많아요', '② 교실이 커요', '③ 교실이 넓어요', '④ 학생이 적어요'],
+      correct: [4],
+      multipleAnswers: false
+    },
+    {
+      id: 22,
+      section: 'vocabulary',
+      korean: '22. 가: 아침에 일찍 일어나요?\n나: 아니요, ( ) 일어나요.',
+      options: ['① 빨리', '② 늦게', '③ 자주', '④ 가끔'],
+      correct: [2],
+      multipleAnswers: false
+    },
+    {
+      id: 23,
+      section: 'vocabulary',
+      korean: '23. 가: 이 음식이 맵다고 생각해요?\n나: 아니요, ( ).',
+      options: ['① 매워요', '② 싱거워요', '③ 달아요', '④ 안 매워요'],
+      correct: [4],
+      multipleAnswers: false
+    },
+
+    // ================= GRAMMAR - SENTENCE ORDER (24~27) =================
+    {
+      id: 24,
+      section: 'grammar',
+      korean: '24. 다음을 순서에 맞게 배열한 것을 고르십시오.\n(가) 도서관에서 책을 봅니다.\n(나) 저는 학교에 갑니다.\n(다) 수업 후에 도서관에 갑니다.\n(라) 학교에서 수업을 듣습니다.',
+      options: [
+        '① (가)-(나)-(다)-(라)',
+        '② (라)-(나)-(다)-(가)',
+        '③ (나)-(다)-(라)-(가)',
+        '④ (나)-(라)-(다)-(가)'
+      ],
+      correct: [4],
+      multipleAnswers: false
+    },
+    {
+      id: 25,
+      section: 'grammar',
+      korean: '25. 다음을 순서에 맞게 배열한 것을 고르십시오.\n(가) 커피를 마십니다.\n(나) 카페에 갑니다.\n(다) 맛있습니다.\n(라) 물도 마십니다.',
+      options: [
+        '① (나)-(가)-(다)-(라)',
+        '② (가)-(나)-(다)-(라)',
+        '③ (나)-(다)-(가)-(라)',
+        '④ (라)-(가)-(나)-(다)'
+      ],
+      correct: [1],
+      multipleAnswers: false
+    },
+    {
+      id: 26,
+      section: 'grammar',
+      korean: '26. 다음을 순서에 맞게 배열한 것을 고르십시오.\n(가) 병원에 갑니다.\n(나) 몸이 아픕니다.\n(다) 의사를 만납니다.\n(라) 약을 받습니다.',
+      options: [
+        '① (나)-(가)-(다)-(라)',
+        '② (가)-(나)-(다)-(라)',
+        '③ (나)-(가)-(라)-(다)',
+        '④ (라)-(다)-(가)-(나)'
+      ],
+      correct: [1],
+      multipleAnswers: false
+    },
+    {
+      id: 27,
+      section: 'grammar',
+      korean: '27. 다음을 순서에 맞게 배열한 것을 고르십시오.\n(가) 날씨가 더워요.\n(나) 물을 마십니다.\n(다) 시원해집니다.\n(라) 카페에서 물을 주문합니다.',
+      options: [
+        '① (가)-(라)-(나)-(다)',
+        '② (가)-(나)-(다)-(라)',
+        '③ (라)-(가)-(나)-(다)',
+        '④ (나)-(가)-(다)-(라)'
+      ],
+      correct: [1],
+      multipleAnswers: false
+    },
+
+    // ================= VOCABULARY - NUMBERS & COUNTERS (28~32) =================
+    {
+      id: 28,
+      section: 'vocabulary',
+      korean: '28. 책이 ( ) 권 있습니다.',
+      options: ['① 세', '② 삼', '③ 셋', '④ 셋째'],
+      correct: [1],
+      multipleAnswers: false
+    },
+    {
+      id: 29,
+      section: 'vocabulary',
+      korean: '29. 교실에 학생이 네 ( ) 있습니다.',
+      options: ['① 권', '② 자루', '③ 명', '④ 개'],
+      correct: [3],
+      multipleAnswers: false
+    },
+    {
+      id: 30,
+      section: 'vocabulary',
+      korean: '30. 컵이 ( ) 개 있습니다.',
+      options: ['① 둘', '② 이', '③ 두', '④ 이십'],
+      correct: [3],
+      multipleAnswers: false
+    },
+    {
+      id: 31,
+      section: 'vocabulary',
+      korean: '31. 연필이 ( ) 자루 있습니다.',
+      options: ['① 세', '② 삼', '③ 셋', '④ 삼십'],
+      correct: [1],
+      multipleAnswers: false
+    },
+    {
+      id: 32,
+      section: 'vocabulary',
+      korean: '32. 가: 가방은 몇 개 있어요?\n나: 한 ( ) 있어요.',
+      options: ['① 명', '② 자루', '③ 개', '④ 권'],
+      correct: [3],
+      multipleAnswers: false
+    },
+
+    // ================= UNDERSTANDING - WRONG ONE (33~36) =================
+    {
+      id: 33,
+      section: 'understanding',
+      korean: '33. 저는 학생입니다. 매일 학교에 갑니다. 아침에 빵을 먹습니다. 친구들과 같이 공부합니다.',
+      options: [
+        '① 학교에 다닙니다.',
+        '② 아침에 빵을 먹습니다.',
+        '③ 친구들과 같이 공부합니다.',
+        '④ 매일 학교에 갑니다.'
+      ],
+      correct: [2],
+      multipleAnswers: false
+    },
+    {
+      id: 34,
+      section: 'understanding',
+      korean: '34. 저는 회사원입니다. 오전에 회의가 있습니다. 일을 많이 합니다. 저녁에는 집에서 쉽니다.',
+      options: [
+        '① 회사에서 일합니다.',
+        '② 오전에 회의가 있습니다.',
+        '③ 일을 많이 합니다.',
+        '④ 저녁에는 집에서 쉽니다.'
+      ],
+      correct: [4],
+      multipleAnswers: false
+    },
+    {
+      id: 35,
+      section: 'understanding',
+      korean: '35. 이번 주에 시험이 있습니다. 열심히 공부합니다. 도서관에 자주 갑니다. 매일 운동합니다.',
+      options: [
+        '① 이번 주에 시험이 있습니다.',
+        '② 열심히 공부합니다.',
+        '③ 매일 운동합니다.',
+        '④ 도서관에 자주 갑니다.'
+      ],
+      correct: [3],
+      multipleAnswers: false
+    },
+    {
+      id: 36,
+      section: 'understanding',
+      korean: '36. 가방에 책과 공책이 있습니다. 연필과 지우개를 사용합니다. 수업 시간에 필기합니다. 오후에 수업이 있습니다.',
+      options: [
+        '① 가방에 책과 공책이 있습니다.',
+        '② 연필과 지우개를 사용합니다.',
+        '③ 수업 시간에 필기합니다.',
+        '④ 아침에 수업이 있습니다.'
+      ],
+      correct: [4],
+      multipleAnswers: false
+    },
+
+    // ================= UNDERSTANDING - SAME MEANING (37~40) =================
+    {
+      id: 37,
+      section: 'understanding',
+      korean: '37. 비가 와요. 오늘 밖에 나가지 않을 거예요.',
+      options: [
+        '① 친구를 만날 거예요.',
+        '② 집에 있을 거예요.',
+        '③ 공원에 갈 거예요.',
+        '④ 운동을 할 거예요.'
+      ],
+      correct: [2],
+      multipleAnswers: false
+    },
+    {
+      id: 38,
+      section: 'understanding',
+      korean: '38. 시험이 있어요. 그래서 오늘 공부할 거예요.',
+      options: [
+        '① 오늘 놀 거예요.',
+        '② 여행을 갈 거예요.',
+        '③ 열심히 공부할 거예요.',
+        '④ 영화를 볼 거예요.'
+      ],
+      correct: [3],
+      multipleAnswers: false
+    },
+    {
+      id: 39,
+      section: 'understanding',
+      korean: '39. 날씨가 더워요. 시원한 곳에 가고 싶어요.',
+      options: [
+        '① 따뜻한 옷을 입고 싶어요.',
+        '② 집에만 있을 거예요.',
+        '③ 시원한 곳에 갈 거예요.',
+        '④ 운동을 할 거예요.'
+      ],
+      correct: [3],
+      multipleAnswers: false
+    },
+    {
+      id: 40,
+      section: 'understanding',
+      korean: '40. 날씨가 추워요. 새 옷이 필요해요.',
+      options: [
+        '① 따뜻한 옷을 살 거예요.',
+        '② 수영을 할 거예요.',
+        '③ 아이스크림을 먹을 거예요.',
+        '④ 창문을 열 거예요.'
+      ],
+      correct: [1],
+      multipleAnswers: false
+    }
   ];
+
+  useEffect(() => {
+    if (showTest && timeLeft > 0) {
+      const timer = setTimeout(() => setTimeLeft(timeLeft - 1), 1000);
+      return () => clearTimeout(timer);
+    } else if (timeLeft === 0 && showTest && !showResults) {
+      submitTest();
+    }
+  }, [timeLeft, showTest, showResults]);
+
+  const formatTime = (seconds: number) => {
+    const mins = Math.floor(seconds / 60);
+    const secs = seconds % 60;
+    return `${mins.toString().padStart(2, '0')}:${secs.toString().padStart(2, '0')}`;
+  };
 
   const handleStart = () => {
     if (name && nationality && birthYear) setShowTest(true);
   };
 
-  const handleAnswerChange = (id, value) => {
-    setAnswers({ ...answers, [id]: value });
+  const handleAnswerChange = (id: number, value: string) => {
+    setAnswers(prev => ({ ...prev, [id]: [value] }));
   };
 
   const submitTest = () => {
@@ -74,46 +446,39 @@ import React, { useState } from 'react';
     let vocabTotal = 0, grammarTotal = 0, understandTotal = 0;
 
     questions.forEach(q => {
-      if (q.section === 'vocabulary') {
-        vocabTotal++;
-        if (answers[q.id] === q.correct) vocabCount++;
-      }
-      if (q.section === 'grammar') {
-        grammarTotal++;
-        if (answers[q.id] === q.correct) grammarCount++;
-      }
-      if (q.section === 'understanding') {
-        understandTotal++;
-        if (answers[q.id] === q.correct) understandCount++;
+      if (!q.isExample) {
+        const userAns = answers[q.id] || [];
+        const isCorrect = q.correct.every(c => userAns.includes(c.toString())) && userAns.length === q.correct.length;
+        if (q.section === 'vocabulary') { vocabTotal++; if (isCorrect) vocabCount++; }
+        if (q.section === 'grammar') { grammarTotal++; if (isCorrect) grammarCount++; }
+        if (q.section === 'understanding') { understandTotal++; if (isCorrect) understandCount++; }
       }
     });
 
-    const vScore = Math.round((vocabCount / vocabTotal) * 44);
-    const gScore = Math.round((grammarCount / grammarTotal) * 56);
-    const uScore = Math.round((understandCount / understandTotal) * 100);
-    const totalScore = Math.round(((vocabCount + grammarCount + understandCount) / questions.length) * 100);
+    const vScore = vocabTotal > 0 ? Math.round((vocabCount / vocabTotal) * 44) : 0;
+    const gScore = grammarTotal > 0 ? Math.round((grammarCount / grammarTotal) * 56) : 0;
+    const uScore = understandTotal > 0 ? Math.round((understandCount / understandTotal) * 100) : 0;
 
     setVocabScore(vScore);
     setGrammarScore(gScore);
     setUnderstandScore(uScore);
-    setScore(totalScore);
     setShowResults(true);
   };
 
-  const getSectionTitle = (questionId) => {
-    if (questionId >= 1 && questionId <= 10) {
-      return '(1-10) 밑줄 친 부분과 반대되는 뜻을 가진 것을 고르십시오.\nChoose the word that has the opposite meaning to the underlined part.';
-    } else if (questionId >= 11 && questionId <= 15) {
-      return '(11-15) 알맞은 것에 O 하십시오.\nMark O for the right one.';
-    } else if (questionId >= 16 && questionId <= 40) {
-      return '(16-40) 가장 알맞은 답을 고르십시오.\nChoose the most appropriate answer.';
-    }
+  const getSectionTitle = (id: number) => {
+    if (id === 1) return '※ [1~9] 문법 - 조사\n(Grammar - Particles: Subject 는/가, Object 를/을, Location 에/에서, Time 에, With 와/과)';
+    if (id === 10) return '※ [10~13] 동사 활용 - 시제를 고르십시오.\n(Verb Conjugation - Choose the correct tense)';
+    if (id === 14) return '※ [14~23] 밑줄 친 부분과 반대되는 뜻을 가진 것을 고르십시오.\n(Choose the word that has the opposite meaning to the underlined part)';
+    if (id === 24) return '※ [24~27] 다음을 순서에 맞게 배열한 것을 고르십시오.\n(Choose the correct order)';
+    if (id === 28) return '※ [28~32] 숫자와 단위 명사\n(Numbers and Counters)';
+    if (id === 33) return '※ [33~36] 다음을 읽고 맞지 않는 것을 고르십시오.\n(Choose the one that does not match with the other answers)';
+    if (id === 37) return '※ [37~40] 다음을 읽고 내용이 같은 것을 고르십시오.\n(Choose the matching statement)';
     return '';
   };
 
-  const formatQuestionText = (text) => {
-    return text.split('\n').map((line, index) => (
-      <div key={index} className={line.startsWith('가:') || line.startsWith('나:') ? 'text-blue-700 font-medium' : ''}>
+  const formatQuestionText = (text: string) => {
+    return text.split('\n').map((line, i) => (
+      <div key={i} className={line.includes('(') && line.includes(')') ? 'text-gray-600 text-sm italic mt-1' : 'mb-2'}>
         {line}
       </div>
     ));
@@ -126,60 +491,33 @@ import React, { useState } from 'react';
           <div className="bg-white rounded-lg shadow-lg p-8">
             <div className="text-center mb-8 pb-6 border-b-2 border-blue-600">
               <h1 className="text-3xl font-bold text-gray-800 mb-2">한국어 능력 평가 시험 (Level 1)</h1>
-              <p className="text-sm text-gray-600 mb-1">Korean Proficiency Test - Beginner Level</p>
-              <p className="text-sm text-gray-500">امتحان تحديد مستوى اللغة الكورية - المستوى الأول</p>
+              <p className="text-sm text-gray-600">Korean Proficiency Test - Beginner Level</p>
             </div>
-            
+
             <div className="bg-gray-50 p-4 rounded-lg mb-6 text-sm text-gray-700">
-              <strong>지시사항 (Instructions / التعليمات):</strong><br/>
-              • 각 문제에서 가장 적절한 답을 선택하세요.<br/>
-              • Choose the most appropriate answer for each question.<br/>
-              • اختر الإجابة الأنسب لكل سؤال.
+              <strong>Instructions:</strong><br/>
+              • Time limit: 59 minutes<br/>
+              • Choose the most appropriate answer<br/>
+              • 40 questions total
             </div>
 
             <div className="space-y-4">
               <div>
-                <label className="block text-gray-700 font-medium mb-2">Name / الاسم:</label>
-                <input
-                  type="text"
-                  value={name}
-                  onChange={(e) => setName(e.target.value)}
-                  className="w-full border border-gray-300 p-3 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
-                  placeholder="Enter your name"
-                />
+                <label className="block font-medium mb-2">Name:</label>
+                <input type="text" value={name} onChange={e => setName(e.target.value)} className="w-full border p-3 rounded-lg" placeholder="Enter your name" />
               </div>
-              
               <div>
-                <label className="block text-gray-700 font-medium mb-2">Nationality / الجنسية:</label>
-                <input
-                  type="text"
-                  value={nationality}
-                  onChange={(e) => setNationality(e.target.value)}
-                  className="w-full border border-gray-300 p-3 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
-                  placeholder="Enter your nationality"
-                />
+                <label className="block font-medium mb-2">Nationality:</label>
+                <input type="text" value={nationality} onChange={e => setNationality(e.target.value)} className="w-full border p-3 rounded-lg" placeholder="Enter your nationality" />
               </div>
-              
               <div>
-                <label className="block text-gray-700 font-medium mb-2">Year of birth / سنة الميلاد:</label>
-                <input
-                  type="number"
-                  value={birthYear}
-                  onChange={(e) => setBirthYear(e.target.value)}
-                  className="w-full border border-gray-300 p-3 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
-                  placeholder="Enter your birth year"
-                  min="1900"
-                  max="2010"
-                />
+                <label className="block font-medium mb-2">Year of birth:</label>
+                <input type="number" value={birthYear} onChange={e => setBirthYear(e.target.value)} className="w-full border p-3 rounded-lg" placeholder="Enter your birth year" />
               </div>
             </div>
-            
-            <button 
-              onClick={handleStart} 
-              disabled={!name || !nationality || !birthYear}
-              className="w-full mt-6 bg-blue-600 text-white px-6 py-3 rounded-lg font-semibold hover:bg-blue-700 disabled:bg-gray-400 disabled:cursor-not-allowed transition-colors"
-            >
-              Start Test / ابدأ الاختبار
+
+            <button onClick={handleStart} disabled={!name || !nationality || !birthYear} className="w-full mt-6 bg-blue-600 text-white py-3 rounded-lg font-semibold hover:bg-blue-700 disabled:bg-gray-400 transition">
+              Start Test (59:00)
             </button>
           </div>
         </div>
@@ -188,151 +526,44 @@ import React, { useState } from 'react';
   }
 
   if (showResults) {
-    const vocabPercentage = Math.round((vocabScore / 44) * 100);
-    const grammarPercentage = Math.round((grammarScore / 56) * 100);
-    const understandPercentage = Math.round((understandScore / 100) * 100);
-
+    const total = vocabScore + grammarScore + understandScore;
     return (
       <div className="min-h-screen bg-gray-50 py-8">
-        <div className="max-w-6xl mx-auto p-8">
+        <div className="max-w-4xl mx-auto p-8">
           <div className="bg-white rounded-lg shadow-lg p-8">
-            {/* Header with Logo */}
-            <div className="flex items-center mb-8">
-              <div className="w-12 h-12 bg-gradient-to-br from-amber-400 to-amber-600 rounded-lg flex items-center justify-center mr-4">
-                <span className="text-white font-bold text-lg">세</span>
+            <h1 className="text-3xl font-bold mb-6 text-center">한국어 능력 평가 시험 결과</h1>
+            <div className="text-center mb-8">
+              <p className="text-gray-600 mb-2">Name: {name}</p>
+              <p className="text-gray-600 mb-2">Nationality: {nationality}</p>
+              <p className="text-gray-600">Birth Year: {birthYear}</p>
+            </div>
+            
+            <div className="text-center mb-8">
+              <p className="text-5xl font-bold text-blue-600 mb-2">{total}/200</p>
+              <p className="text-xl text-gray-600">Total Score</p>
+            </div>
+
+            <div className="grid grid-cols-3 gap-6 mt-8">
+              <div className="bg-blue-50 p-6 rounded-lg border-2 border-blue-300">
+                <h3 className="font-bold text-xl mb-2 text-blue-800">어휘 (Vocabulary)</h3>
+                <p className="text-4xl font-bold text-blue-600">{vocabScore}</p>
+                <p className="text-gray-600 mt-1">/ 44</p>
               </div>
-              <div>
-                <h1 className="text-2xl font-bold text-gray-800">online Korean test results</h1>
+              <div className="bg-green-50 p-6 rounded-lg border-2 border-green-300">
+                <h3 className="font-bold text-xl mb-2 text-green-800">문법 (Grammar)</h3>
+                <p className="text-4xl font-bold text-green-600">{grammarScore}</p>
+                <p className="text-gray-600 mt-1">/ 56</p>
+              </div>
+              <div className="bg-yellow-50 p-6 rounded-lg border-2 border-yellow-300">
+                <h3 className="font-bold text-xl mb-2 text-yellow-800">이해 (Understanding)</h3>
+                <p className="text-4xl font-bold text-yellow-600">{understandScore}</p>
+                <p className="text-gray-600 mt-1">/ 100</p>
               </div>
             </div>
 
-            {/* Main Results Table */}
-            <div className="overflow-x-auto mb-8">
-              <table className="w-full border-collapse border border-gray-300">
-                <thead>
-                  <tr className="bg-gray-100">
-                    <th className="border border-gray-300 p-3 text-sm font-medium">Name</th>
-                    <th className="border border-gray-300 p-3 text-sm font-medium">Nationality</th>
-                    <th className="border border-gray-300 p-3 text-sm font-medium">Year of birth</th>
-                    <th className="border border-gray-300 p-3 text-sm font-medium">Date of exam</th>
-                    <th className="border border-gray-300 p-3 text-sm font-medium">Test option</th>
-                   
-                    <th className="border border-gray-300 p-3 text-sm font-medium">Level Placement</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  <tr>
-                    <td className="border border-gray-300 p-3 text-sm">{name}</td>
-                    <td className="border border-gray-300 p-3 text-sm">{nationality}</td>
-                    <td className="border border-gray-300 p-3 text-sm">{birthYear}</td>
-                    <td className="border border-gray-300 p-3 text-sm">{currentDate}</td>
-                    <td className="border border-gray-300 p-3 text-sm">Beginner</td>
-                    <td className="border border-gray-300 p-3 text-sm bg-green-100 font-semibold">3A</td>
-                  </tr>
-                </tbody>
-              </table>
-            </div>
-
-            <p className="text-sm text-gray-600 mb-8">
-              ※Level placement result can be adjusted through additional consultation with Korean language teachers or according to each King Sejong Institute's learning condition.
-            </p>
-
-            <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
-              {/* Detailed Evaluation Table */}
-              <div>
-                <h2 className="text-xl font-bold text-gray-800 mb-4"> Detailed evaluation result</h2>
-                <div className="overflow-x-auto">
-                  <table className="w-full border-collapse border border-gray-300">
-                    <thead>
-                      <tr className="bg-gray-100">
-                        <th className="border border-gray-300 p-3 text-sm font-medium">Details area</th>
-                        <th className="border border-gray-300 p-3 text-sm font-medium">Test Score</th>
-                        <th className="border border-gray-300 p-3 text-sm font-medium">Points possible</th>
-                        <th className="border border-gray-300 p-3 text-sm font-medium">Percentage correct</th>
-                      </tr>
-                    </thead>
-                    <tbody>
-                      <tr>
-                        <td className="border border-gray-300 p-3 text-sm font-medium">Vocabulary</td>
-                        <td className="border border-gray-300 p-3 text-sm text-center">{vocabScore}</td>
-                        <td className="border border-gray-300 p-3 text-sm text-center">44</td>
-                        <td className="border border-gray-300 p-3 text-sm text-center bg-blue-50">{vocabPercentage}%</td>
-                      </tr>
-                      <tr>
-                        <td className="border border-gray-300 p-3 text-sm font-medium">Grammar</td>
-                        <td className="border border-gray-300 p-3 text-sm text-center">{grammarScore}</td>
-                        <td className="border border-gray-300 p-3 text-sm text-center">56</td>
-                        <td className="border border-gray-300 p-3 text-sm text-center bg-green-50">{grammarPercentage}%</td>
-                      </tr>
-                      <tr>
-                        <td className="border border-gray-300 p-3 text-sm font-medium">Understand</td>
-                        <td className="border border-gray-300 p-3 text-sm text-center">{understandScore}</td>
-                        <td className="border border-gray-300 p-3 text-sm text-center">100</td>
-                        <td className="border border-gray-300 p-3 text-sm text-center bg-yellow-50">{understandPercentage}%</td>
-                      </tr>
-                    </tbody>
-                  </table>
-                </div>
-              </div>
-
-              {/* Radar Chart Visualization */}
-              <div className="flex flex-col items-center">
-                <h3 className="text-lg font-semibold mb-6 text-gray-800">Performance Radar</h3>
-                <div className="relative w-64 h-64">
-                  <svg viewBox="0 0 200 200" className="w-full h-full">
-                    {/* Grid lines */}
-                    <defs>
-                      <pattern id="grid" width="40" height="40" patternUnits="userSpaceOnUse">
-                        <path d="M 40 0 L 0 0 0 40" fill="none" stroke="#e5e7eb" strokeWidth="1"/>
-                      </pattern>
-                    </defs>
-                    
-                    {/* Background circles */}
-                    {[20, 40, 60, 80].map((r, i) => (
-                      <circle
-                        key={i}
-                        cx="100"
-                        cy="100"
-                        r={r}
-                        fill="none"
-                        stroke="#e5e7eb"
-                        strokeWidth="1"
-                      />
-                    ))}
-                    
-                    {/* Axis lines */}
-                    <line x1="100" y1="20" x2="100" y2="180" stroke="#e5e7eb" strokeWidth="1"/>
-                    <line x1="30" y1="150" x2="170" y2="50" stroke="#e5e7eb" strokeWidth="1"/>
-                    <line x1="30" y1="50" x2="170" y2="150" stroke="#e5e7eb" strokeWidth="1"/>
-                    
-                    {/* Data polygon */}
-                    <polygon
-                      points={`100,${100 - (vocabPercentage * 0.8)} ${100 + (grammarPercentage * 0.69)},${100 + (grammarPercentage * 0.4)} ${100 - (understandPercentage * 0.69)},${100 + (understandPercentage * 0.4)}`}
-                      fill="rgba(59, 130, 246, 0.3)"
-                      stroke="#3b82f6"
-                      strokeWidth="2"
-                    />
-                    
-                    {/* Data points */}
-                    <circle cx="100" cy={100 - (vocabPercentage * 0.8)} r="4" fill="#3b82f6"/>
-                    <circle cx={100 + (grammarPercentage * 0.69)} cy={100 + (grammarPercentage * 0.4)} r="4" fill="#3b82f6"/>
-                    <circle cx={100 - (understandPercentage * 0.69)} cy={100 + (understandPercentage * 0.4)} r="4" fill="#3b82f6"/>
-                    
-                    {/* Labels */}
-                    <text x="100" y="15" textAnchor="middle" className="text-xs fill-gray-600" fontSize="12">Vocabulary</text>
-                    <text x="185" y="155" textAnchor="middle" className="text-xs fill-gray-600" fontSize="12">Grammar</text>
-                    <text x="15" y="155" textAnchor="middle" className="text-xs fill-gray-600" fontSize="12">Understand</text>
-                  </svg>
-                </div>
-              </div>
-            </div>
-
-            <div className="mt-8 pt-6 border-t border-gray-200 text-center">
-              <button 
-                onClick={() => window.print()} 
-                className="bg-blue-600 text-white px-8 py-3 rounded-lg font-semibold hover:bg-blue-700 transition-colors shadow-md"
-              >
-                 Print Results
+            <div className="mt-8 text-center">
+              <button onClick={() => window.location.reload()} className="bg-blue-600 text-white px-8 py-3 rounded-lg hover:bg-blue-700 transition">
+                Take Test Again
               </button>
             </div>
           </div>
@@ -345,101 +576,86 @@ import React, { useState } from 'react';
     <div className="min-h-screen bg-gray-50 py-8">
       <div className="max-w-4xl mx-auto p-6">
         <div className="bg-white rounded-lg shadow-lg p-8">
-          {/* Header */}
-          <div className="text-center mb-8 pb-6 border-b-2 border-blue-600">
-            <h1 className="text-3xl font-bold text-gray-800 mb-2">한국어 능력 평가 시험 (Level 1)</h1>
-            <p className="text-sm text-gray-600 mb-1">Korean Proficiency Test - Beginner Level</p>
-            <p className="text-sm text-gray-500">امتحان تحديد مستوى اللغة الكورية - المستوى الأول</p>
-          </div>
-          
-          {/* Instructions */}
-          <div className="bg-blue-50 p-4 rounded-lg mb-6 text-sm text-gray-700 border-l-4 border-blue-400">
-            <strong>지시사항 (Instructions / التعليمات):</strong><br/>
-            • 각 문제에서 가장 적절한 답을 선택하세요.<br/>
-            • Choose the most appropriate answer for each question.<br/>
-            • اختر الإجابة الأنسب لكل سؤال.
+          <div className="text-center mb-8 sticky top-0 bg-white z-10 pb-4 border-b-2">
+            <h1 className="text-3xl font-bold">한국어 능력 평가 시험 (Level 1)</h1>
+            <div className="mt-4 text-4xl font-bold text-red-600">{formatTime(timeLeft)}</div>
           </div>
 
-          {/* Questions */}
-          <div className="space-y-8">
+          <div className="space-y-12">
             {questions.map((q, index) => {
-              const isNewSection = index === 0 || 
-                (q.id === 11) || 
-                (q.id === 16);
-              
+              const showTitle = index === 0 || q.id === 1 || q.id === 10 || q.id === 14 || q.id === 24 || q.id === 28 || q.id === 33 || q.id === 37;
+
               return (
                 <div key={q.id}>
-                  {/* Section Title */}
-                  {isNewSection && (
-                    <div className="bg-blue-100 p-4 rounded-lg mb-6 border-l-4 border-blue-500">
-                      <div className="font-bold text-blue-800 whitespace-pre-line text-sm">
-                        {getSectionTitle(q.id)}
+                  {showTitle && !q.isExample && (
+                    <div className="bg-blue-50 p-5 rounded-lg mb-8 font-bold text-blue-900 border-l-4 border-blue-600">
+                      {getSectionTitle(q.id)}
+                    </div>
+                  )}
+
+                  {q.isExample && (
+                    <div className="bg-yellow-50 p-6 rounded-lg mb-10 border-2 border-yellow-400">
+                      <div className="font-bold text-xl text-yellow-900 mb-4">
+                        ※ &lt;보기&gt; (Example)
+                      </div>
+                      <div className="text-lg leading-loose">
+                        {formatQuestionText(q.korean)}
+                      </div>
+                      <div className="mt-4 text-green-700 font-semibold">
+                        정답 (Correct Answer): ③ 과일
                       </div>
                     </div>
                   )}
-                  
-                  {/* Question */}
-                  <div className="bg-gray-50 p-6 rounded-lg border border-gray-200">
-                    <div className="flex items-start mb-4">
-                      <span className="bg-blue-600 text-white px-3 py-1 rounded-full text-sm font-bold mr-3 mt-1">
-                        {q.id}
-                      </span>
-                      <div className="flex-1">
-                        <div className="bg-blue-50 p-4 rounded-lg border-l-3 border-l-blue-400 mb-4">
-                          <div className="text-base leading-relaxed">
+
+                  {!q.isExample && (
+                    <div className="bg-gray-50 p-8 rounded-lg border border-gray-300 hover:shadow-md transition">
+                      <div className="flex items-start gap-6">
+                        <div className="bg-blue-600 text-white w-12 h-12 rounded-full flex items-center justify-center text-2xl font-bold flex-shrink-0">
+                          {q.id}
+                        </div>
+                        <div className="flex-1">
+                          <div className="bg-white p-6 rounded-lg mb-6 border-l-4 border-blue-500">
                             {formatQuestionText(q.korean)}
                           </div>
-                        </div>
-                        
-                        {/* Options */}
-                        <div className="grid grid-cols-2 gap-3">
-                          {q.options.map((option, optIndex) => {
-                            const optionValue = q.type === 'mark' ? option : (optIndex + 1).toString();
-                            const isSelected = answers[q.id] === optionValue;
-                            
-                            return (
-                              <button
-                                key={optIndex}
-                                onClick={() => handleAnswerChange(q.id, optionValue)}
-                                className={`p-4 text-left rounded-lg border-2 transition-all duration-200 hover:shadow-md ${
-                                  isSelected 
-                                    ? 'bg-blue-100 border-blue-500 shadow-md' 
-                                    : 'bg-white border-gray-300 hover:bg-gray-50 hover:border-blue-300'
-                                }`}
-                              >
-                                <span className="font-semibold text-blue-600 mr-2">
-                                  {option.split(' ')[0]}
-                                </span>
-                                <span className="text-gray-800">
-                                  {option.substring(option.indexOf(' ') + 1)}
-                                </span>
-                              </button>
-                            );
-                          })}
+
+                          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                            {q.options.map((opt, i) => {
+                              const val = (i + 1).toString();
+                              const selected = (answers[q.id] || []).includes(val);
+                              return (
+                                <button
+                                  key={i}
+                                  onClick={() => handleAnswerChange(q.id, val)}
+                                  className={`p-5 text-left rounded-lg border-2 transition-all duration-200 text-base ${
+                                    selected 
+                                      ? 'bg-blue-100 border-blue-600 shadow-lg transform scale-105' 
+                                      : 'bg-white border-gray-300 hover:border-blue-400 hover:shadow-md'
+                                  }`}
+                                >
+                                  <span className="font-bold text-blue-700 text-xl mr-3">{opt.split(' ')[0]}</span>
+                                  <span className="text-gray-800">{opt.substring(opt.indexOf(' ') + 1)}</span>
+                                </button>
+                              );
+                            })}
+                          </div>
                         </div>
                       </div>
                     </div>
-                  </div>
+                  )}
                 </div>
               );
             })}
           </div>
 
-          {/* Submit Button */}
-          <div className="mt-12 pt-8 border-t border-gray-200 text-center">
-            <div className="bg-green-50 p-6 rounded-lg border border-green-200 mb-6">
-              <h3 className="text-lg font-bold text-green-800 mb-2">시험 완료 - Test Completed - انتهاء الاختبار</h3>
-              <p className="text-sm text-green-700">답안을 검토하고 제출하세요 - Review your answers and submit - راجع إجاباتك وسلّم الاختبار</p>
-            </div>
-            <button 
-              onClick={submitTest}
-              className="bg-green-600 text-white px-8 py-4 rounded-lg font-semibold hover:bg-green-700 transition-colors shadow-lg text-lg"
-            >
-              🎯 Submit Test / تسليم الاختبار
+          <div className="mt-16 text-center sticky bottom-4">
+            <button onClick={submitTest} className="bg-green-600 text-white px-16 py-6 rounded-xl text-2xl font-bold hover:bg-green-700 shadow-2xl transform hover:scale-105 transition">
+              제출하기 (Submit Test)
             </button>
           </div>
         </div>
       </div>
     </div>
-  );}
-  export default KoreanLevel1Test;
+  );
+};
+
+export default KoreanLevel1Test;
