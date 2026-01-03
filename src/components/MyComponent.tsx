@@ -1,3 +1,4 @@
+
 import React, { useState, useEffect } from 'react';
 
 const KoreanLevel1Test = () => {
@@ -77,8 +78,8 @@ const KoreanLevel1Test = () => {
   section: 'grammar',
   korean: '7. 친구( ) 같이 영화를 봤어요.',
   options: ['① 에게', '② 한테', '③ 와', '④ 하고'],
-  correct: [3],
-  multipleAnswers: false
+  correct: [3, 4],
+  multipleAnswers: true
 },
 {
   id: 8,
@@ -118,9 +119,9 @@ const KoreanLevel1Test = () => {
       id: 12,
       section: 'grammar',
       korean: '12. 지금 저는 책을 ( ).',
-      options: ['① 읽었어요', '② 읽을 거예요', '③ 읽어요', '④ 읽어'],
-      correct: [3],
-      multipleAnswers: false
+      options: ['① 읽고있어요', '② 읽을 거예요', '③ 읽어요', '④ 읽어'],
+      correct: [1, 3],
+      multipleAnswers: true
     },
     {
       id: 13,
@@ -159,8 +160,8 @@ const KoreanLevel1Test = () => {
     {
       id: 17,
       section: 'vocabulary',
-      korean: '17. 가: 이 음식이 싸요?\n나: 아니요, ( ).',
-      options: ['① 저렴해요', '② 비싸요', '③ 맛있어요', '④ 달아요'],
+      korean: '17. 가: 한국어가 어려워요?\n나: 아니요, ( ).',
+      options: ['① 어려워요', '② 쉬워요', '③ 바빠요', '④ 커요'],
       correct: [2],
       multipleAnswers: false
     },
@@ -172,11 +173,11 @@ const KoreanLevel1Test = () => {
       correct: [3],
       multipleAnswers: false
     },
-    {
+   {
       id: 19,
       section: 'vocabulary',
-      korean: '19. 가: 이 방이 밝아요.\n나: 아니요, 저 방은 ( ).',
-      options: ['① 밝아요', '② 깨끗해요', '③ 넓어요', '④ 어두워요'],
+      korean: '19. 가: 이 문장을 이해해요?\n나: 아니요, ( ).',
+      options: ['① 이해해요', '② 몰라요', '③ 이해해요 잘', '④ 이해 못 해요'],
       correct: [4],
       multipleAnswers: false
     },
@@ -212,12 +213,21 @@ const KoreanLevel1Test = () => {
       correct: [4],
       multipleAnswers: false
     },
-
-    // ================= GRAMMAR - SENTENCE ORDER (24~27) =================
     {
-      id: 24,
+  id: 24, 
+  section: 'vocabulary',
+  korean: '24. 가: 이 꽃이 예뻐요?\n나: 아니요, ( ).',
+  options: ['① 예뻐요', '② 비싸요', '③ 안 예뻐요', '④ 커요'],
+  correct: [3],
+  multipleAnswers: false
+},
+
+
+    // ================= GRAMMAR - SENTENCE ORDER (25~28) =================
+    {
+      id: 25,
       section: 'grammar',
-      korean: '24. 다음을 순서에 맞게 배열한 것을 고르십시오.\n(가) 도서관에서 책을 봅니다.\n(나) 저는 학교에 갑니다.\n(다) 수업 후에 도서관에 갑니다.\n(라) 학교에서 수업을 듣습니다.',
+      korean: '25. 다음을 순서에 맞게 배열한 것을 고르십시오.\n(가) 도서관에서 책을 봅니다.\n(나) 저는 학교에 갑니다.\n(다) 수업 후에 도서관에 갑니다.\n(라) 학교에서 수업을 듣습니다.',
       options: [
         '① (가)-(나)-(다)-(라)',
         '② (라)-(나)-(다)-(가)',
@@ -228,9 +238,9 @@ const KoreanLevel1Test = () => {
       multipleAnswers: false
     },
     {
-      id: 25,
+      id: 26,
       section: 'grammar',
-      korean: '25. 다음을 순서에 맞게 배열한 것을 고르십시오.\n(가) 커피를 마십니다.\n(나) 카페에 갑니다.\n(다) 맛있습니다.\n(라) 물도 마십니다.',
+      korean: '26. 다음을 순서에 맞게 배열한 것을 고르십시오.\n(가) 커피를 마십니다.\n(나) 카페에 갑니다.\n(다) 맛있습니다.\n(라) 물도 마십니다.',
       options: [
         '① (나)-(가)-(다)-(라)',
         '② (가)-(나)-(다)-(라)',
@@ -241,9 +251,9 @@ const KoreanLevel1Test = () => {
       multipleAnswers: false
     },
     {
-      id: 26,
+      id: 27,
       section: 'grammar',
-      korean: '26. 다음을 순서에 맞게 배열한 것을 고르십시오.\n(가) 병원에 갑니다.\n(나) 몸이 아픕니다.\n(다) 의사를 만납니다.\n(라) 약을 받습니다.',
+      korean: '27. 다음을 순서에 맞게 배열한 것을 고르십시오.\n(가) 병원에 갑니다.\n(나) 몸이 아픕니다.\n(다) 의사를 만납니다.\n(라) 약을 받습니다.',
       options: [
         '① (나)-(가)-(다)-(라)',
         '② (가)-(나)-(다)-(라)',
@@ -254,92 +264,94 @@ const KoreanLevel1Test = () => {
       multipleAnswers: false
     },
     {
-      id: 27,
+      id: 28,
       section: 'grammar',
-      korean: '27. 다음을 순서에 맞게 배열한 것을 고르십시오.\n(가) 날씨가 더워요.\n(나) 물을 마십니다.\n(다) 시원해집니다.\n(라) 카페에서 물을 주문합니다.',
+      korean: '28. 다음을 순서에 맞게 배열한 것을 고르십시오.\n(가) 날씨가 더워요.\n(나) 물을 마십니다.\n(다) 시원해집니다.\n(라) 카페에서 물을 주문합니다.',
       options: [
-        '① (가)-(라)-(나)-(다)',
+        '① (라)-(가)-(나)-(다)',
         '② (가)-(나)-(다)-(라)',
-        '③ (라)-(가)-(나)-(다)',
+        '③ (가)-(라)-(나)-(다)',
         '④ (나)-(가)-(다)-(라)'
       ],
-      correct: [1],
+      correct: [3],
       multipleAnswers: false
     },
 
-    // ================= VOCABULARY - NUMBERS & COUNTERS (28~32) =================
+    // ================= VOCABULARY - NUMBERS & COUNTERS (29~33) =================
     {
-      id: 28,
+      id: 29,
       section: 'vocabulary',
-      korean: '28. 책이 ( ) 권 있습니다.',
+      korean: '29. 책이 ( ) 권 있습니다.',
       options: ['① 세', '② 삼', '③ 셋', '④ 셋째'],
       correct: [1],
       multipleAnswers: false
     },
     {
-      id: 29,
-      section: 'vocabulary',
-      korean: '29. 교실에 학생이 네 ( ) 있습니다.',
-      options: ['① 권', '② 자루', '③ 명', '④ 개'],
-      correct: [3],
-      multipleAnswers: false
-    },
-    {
       id: 30,
       section: 'vocabulary',
-      korean: '30. 컵이 ( ) 개 있습니다.',
-      options: ['① 둘', '② 이', '③ 두', '④ 이십'],
+      korean: '30. 교실에 학생이 네 ( ) 있습니다.',
+      options: ['① 권', '② 자루', '③ 명', '④ 개'],
       correct: [3],
       multipleAnswers: false
     },
     {
       id: 31,
       section: 'vocabulary',
-      korean: '31. 연필이 ( ) 자루 있습니다.',
-      options: ['① 세', '② 삼', '③ 셋', '④ 삼십'],
-      correct: [1],
+      korean: '31. 컵이 ( ) 개 있습니다.',
+      options: ['① 둘', '② 이', '③ 이십', '④ 두'],
+      correct: [4],
       multipleAnswers: false
     },
     {
       id: 32,
       section: 'vocabulary',
-      korean: '32. 가: 가방은 몇 개 있어요?\n나: 한 ( ) 있어요.',
+      korean: '32. 책이 두 ( ) 있어요.',
+      options: ['① 명', '② 권', '③ 개', '④ 자루'],
+      correct: [2],
+      multipleAnswers: false
+    },
+    {
+      id: 33,
+      section: 'vocabulary',
+      korean: '33. 가: 가방은 몇 개 있어요?\n나: 한 ( ) 있어요.',
       options: ['① 명', '② 자루', '③ 개', '④ 권'],
       correct: [3],
       multipleAnswers: false
     },
 
-    // ================= UNDERSTANDING - WRONG ONE (33~36) =================
-    {
-      id: 33,
-      section: 'understanding',
-      korean: '33. 저는 학생입니다. 매일 학교에 갑니다. 아침에 빵을 먹습니다. 친구들과 같이 공부합니다.',
-      options: [
-        '① 학교에 다닙니다.',
-        '② 아침에 빵을 먹습니다.',
-        '③ 친구들과 같이 공부합니다.',
-        '④ 매일 학교에 갑니다.'
-      ],
-      correct: [2],
-      multipleAnswers: false
-    },
+    // ================= UNDERSTANDING - MAIN TOPIC (34~35) =================
     {
       id: 34,
       section: 'understanding',
-      korean: '34. 저는 회사원입니다. 오전에 회의가 있습니다. 일을 많이 합니다. 저녁에는 집에서 쉽니다.',
+      korean: '34. 다음 글의 주제로 알맞은 것을 고르십시오.\n\n저는 학생입니다. 매일 아침 일찍 일어납니다. 학교에 가서 수업을 듣고 집에 와서 숙제를 합니다.',
       options: [
-        '① 회사에서 일합니다.',
-        '② 오전에 회의가 있습니다.',
-        '③ 일을 많이 합니다.',
-        '④ 저녁에는 집에서 쉽니다.'
+        '① 일상생활',
+        '② 환경 보호',
+        '③ 안전 수칙',
+        '④ 건강 관리'
       ],
-      correct: [4],
+      correct: [1],
       multipleAnswers: false
     },
     {
       id: 35,
       section: 'understanding',
-      korean: '35. 이번 주에 시험이 있습니다. 열심히 공부합니다. 도서관에 자주 갑니다. 매일 운동합니다.',
+      korean: '35. 다음 글의 주제로 알맞은 것을 고르십시오.\n\n비가 오는 날에는 우산을 씁니다. 길이 미끄러우니까 천천히 걷습니다.',
+      options: [
+        '① 여행 계획',
+        '② 날씨와 생활',
+        '③ 친구 관계',
+        '④ 취미 생활'
+      ],
+      correct: [2],
+      multipleAnswers: false
+    },
+
+    // ================= UNDERSTANDING - WRONG ONE (36~37) =================
+    {
+      id: 36,
+      section: 'understanding',
+      korean: '36. 이번 주에 시험이 있습니다. 열심히 공부합니다. 도서관에 자주 갑니다. 매일 운동합니다.',
       options: [
         '① 이번 주에 시험이 있습니다.',
         '② 열심히 공부합니다.',
@@ -350,9 +362,9 @@ const KoreanLevel1Test = () => {
       multipleAnswers: false
     },
     {
-      id: 36,
+      id: 37,
       section: 'understanding',
-      korean: '36. 가방에 책과 공책이 있습니다. 연필과 지우개를 사용합니다. 수업 시간에 필기합니다. 오후에 수업이 있습니다.',
+      korean: '37. 가방에 책과 공책이 있습니다. 연필과 지우개를 사용합니다. 수업 시간에 필기합니다. 오후에 수업이 있습니다.',
       options: [
         '① 가방에 책과 공책이 있습니다.',
         '② 연필과 지우개를 사용합니다.',
@@ -363,11 +375,11 @@ const KoreanLevel1Test = () => {
       multipleAnswers: false
     },
 
-    // ================= UNDERSTANDING - SAME MEANING (37~40) =================
+    // ================= UNDERSTANDING - SAME MEANING (38~40) =================
     {
-      id: 37,
+      id: 38,
       section: 'understanding',
-      korean: '37. 비가 와요. 오늘 밖에 나가지 않을 거예요.',
+      korean: '38. 비가 와요. 오늘 밖에 나가지 않을 거예요.',
       options: [
         '① 친구를 만날 거예요.',
         '② 집에 있을 거예요.',
@@ -378,31 +390,18 @@ const KoreanLevel1Test = () => {
       multipleAnswers: false
     },
     {
-      id: 38,
-      section: 'understanding',
-      korean: '38. 시험이 있어요. 그래서 오늘 공부할 거예요.',
-      options: [
-        '① 오늘 놀 거예요.',
-        '② 여행을 갈 거예요.',
-        '③ 열심히 공부할 거예요.',
-        '④ 영화를 볼 거예요.'
-      ],
-      correct: [3],
-      multipleAnswers: false
-    },
-    {
-      id: 39,
-      section: 'understanding',
-      korean: '39. 날씨가 더워요. 시원한 곳에 가고 싶어요.',
-      options: [
-        '① 따뜻한 옷을 입고 싶어요.',
-        '② 집에만 있을 거예요.',
-        '③ 시원한 곳에 갈 거예요.',
-        '④ 운동을 할 거예요.'
-      ],
-      correct: [3],
-      multipleAnswers: false
-    },
+  id: 39,
+  section: 'understanding',
+  korean: '39. 다음 글을 읽고 빈칸에 들어갈 알맞은 것을 고르십시오.\n\n오늘은 날씨가 덥습니다. 그래서 ( ㄱ ). 친구와 함께 ( ㄴ ). 집에 돌아와서 ( ㄷ ).',
+  options: [
+    '① 집에 있습니다 / 공부합니다 / 쉽니다',
+    '② 시원한 곳에 갑니다 / 음료를 마십니다 / 샤워를 합니다',
+    '③ 운동을 합니다 / 공원에 갑니다 / 일을 합니다',
+    '④ 옷을 입습니다 / 집에 갑니다 / 잡니다'
+  ],
+  correct: [2],
+  multipleAnswers: false
+},
     {
       id: 40,
       section: 'understanding',
@@ -437,9 +436,20 @@ const KoreanLevel1Test = () => {
     if (name && nationality && birthYear) setShowTest(true);
   };
 
-  const handleAnswerChange = (id: number, value: string) => {
+  const handleAnswerChange = (id: number, value: string, multipleAnswers: boolean) => {
+  if (multipleAnswers) {
+    setAnswers(prev => {
+      const current = prev[id] || [];
+      if (current.includes(value)) {
+        return { ...prev, [id]: current.filter(v => v !== value) };
+      } else {
+        return { ...prev, [id]: [...current, value] };
+      }
+    });
+  } else {
     setAnswers(prev => ({ ...prev, [id]: [value] }));
-  };
+  }
+};
 
   const submitTest = () => {
     let vocabCount = 0, grammarCount = 0, understandCount = 0;
@@ -448,11 +458,37 @@ const KoreanLevel1Test = () => {
     questions.forEach(q => {
       if (!q.isExample) {
         const userAns = answers[q.id] || [];
-        const isCorrect = q.correct.every(c => userAns.includes(c.toString())) && userAns.length === q.correct.length;
-        if (q.section === 'vocabulary') { vocabTotal++; if (isCorrect) vocabCount++; }
-        if (q.section === 'grammar') { grammarTotal++; if (isCorrect) grammarCount++; }
-        if (q.section === 'understanding') { understandTotal++; if (isCorrect) understandCount++; }
+        let isCorrect = false;
+let partialCredit = 0;
+
+if (q.multipleAnswers) {
+  const correctCount = q.correct.filter(c => userAns.includes(c.toString())).length;
+  if (correctCount === q.correct.length && userAns.length === q.correct.length) {
+    isCorrect = true; // Full point
+  } else if (correctCount > 0) {
+    partialCredit = correctCount / q.correct.length; // Partial credit
+  }
+} else {
+  isCorrect = q.correct.every(c => userAns.includes(c.toString())) && userAns.length === q.correct.length;
+}
+ if (q.section === 'vocabulary') { 
+  vocabTotal++; 
+  if (isCorrect) vocabCount++; 
+  else if (partialCredit > 0) vocabCount += partialCredit;
+}
+if (q.section === 'grammar') { 
+  grammarTotal++; 
+  if (isCorrect) grammarCount++; 
+  else if (partialCredit > 0) grammarCount += partialCredit;
+}
+if (q.section === 'understanding') { 
+  understandTotal++; 
+  if (isCorrect) understandCount++; 
+  else if (partialCredit > 0) understandCount += partialCredit;
+}
+        
       }
+
     });
 
     const vScore = vocabTotal > 0 ? Math.round((vocabCount / vocabTotal) * 44) : 0;
@@ -465,16 +501,22 @@ const KoreanLevel1Test = () => {
     setShowResults(true);
   };
 
-  const getSectionTitle = (id: number) => {
-    if (id === 1) return '※ [1~9] 문법 - 조사\n(Grammar - Particles: Subject 는/가, Object 를/을, Location 에/에서, Time 에, With 와/과)';
-    if (id === 10) return '※ [10~13] 동사 활용 - 시제를 고르십시오.\n(Verb Conjugation - Choose the correct tense)';
-    if (id === 14) return '※ [14~23] 밑줄 친 부분과 반대되는 뜻을 가진 것을 고르십시오.\n(Choose the word that has the opposite meaning to the underlined part)';
-    if (id === 24) return '※ [24~27] 다음을 순서에 맞게 배열한 것을 고르십시오.\n(Choose the correct order)';
-    if (id === 28) return '※ [28~32] 숫자와 단위 명사\n(Numbers and Counters)';
-    if (id === 33) return '※ [33~36] 다음을 읽고 맞지 않는 것을 고르십시오.\n(Choose the one that does not match with the other answers)';
-    if (id === 37) return '※ [37~40] 다음을 읽고 내용이 같은 것을 고르십시오.\n(Choose the matching statement)';
-    return '';
-  };
+ const getSectionTitle = (id: number) => {
+  if (id === 1) return '※ [1~9] 문법 - 조사\n(Grammar - Particles: Subject 는/가, Object 를/을, Location 에/에서, Time 에, With 와/과)';
+  if (id === 10) return '※ [10~13] 동사 활용 - 시제를 고르십시오.\n(Verb Conjugation - Choose the correct tense)';
+  if (id === 14) return '※ [14~24] 밑줄 친 부분과 반대되는 뜻을 가진 것을 고르십시오.\n(Choose the word that has the opposite meaning to the underlined part)';
+  if (id === 25) return '※ [25~28] 다음을 순서에 맞게 배열한 것을 고르십시오.\n(Choose the correct order)';
+  if (id === 29) return '※ [29~33] 숫자와 단위 명사\n(Numbers and Counters)';
+  if (id === 34) return '※ [34~35] 다음 글의 주제로 알맞은 것을 고르십시오.\n(Choose the main topic)';
+  if (id === 36) return '※ [36~37] 다음을 읽고 맞지 않는 것을 고르십시오.\n(Choose the one that does not match)';
+  if (id === 38) return '※ [38~40] 다음을 읽고 내용이 같은 것을 고르십시오.\n(Choose the matching statement)';
+  return '';
+};
+
+// Helper: returns true if this question starts a new section
+const isSectionStart = (id: number) => {
+  return [1, 10, 14, 25, 29, 34, 36, 38].includes(id);
+};
 
   const formatQuestionText = (text: string) => {
     return text.split('\n').map((line, i) => (
@@ -583,8 +625,7 @@ const KoreanLevel1Test = () => {
 
           <div className="space-y-8 sm:space-y-12">
             {questions.map((q, index) => {
-              const showTitle = index === 0 || q.id === 1 || q.id === 10 || q.id === 14 || q.id === 24 || q.id === 28 || q.id === 33 || q.id === 37;
-
+const showTitle = !q.isExample && isSectionStart(q.id);
               return (
                 <div key={q.id}>
                   {showTitle && !q.isExample && (
@@ -625,8 +666,7 @@ const KoreanLevel1Test = () => {
                               return (
                                 <button
                                   key={i}
-                                  onClick={() => handleAnswerChange(q.id, val)}
-                                  className={`p-3 sm:p-5 text-left rounded-lg border-2 transition-all duration-200 text-sm sm:text-base ${
+onClick={() => handleAnswerChange(q.id, val, q.multipleAnswers)}                                  className={`p-3 sm:p-5 text-left rounded-lg border-2 transition-all duration-200 text-sm sm:text-base ${
                                     selected 
                                       ? 'bg-blue-100 border-blue-600 shadow-lg transform scale-105' 
                                       : 'bg-white border-gray-300 hover:border-blue-400 hover:shadow-md'
